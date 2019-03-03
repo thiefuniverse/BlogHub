@@ -32,6 +32,9 @@ class BlogDetector:
             if link not in history_links:
                 new_blog_links.add(link)
 
+        if not self.config.has_website_prefix:
+            result_links = set(self.config.root_url+"/"+x for x in result_links)
+            new_blog_links = set(self.config.root_url+"/"+x for x in new_blog_links)
         return result_links, new_blog_links
 
     def SaveHistoryLinks(self, result_links, history_file):

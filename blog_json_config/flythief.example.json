@@ -1,0 +1,8 @@
+{
+    "root_url":"https://thiefuniverse.github.io/",
+    "css_selector":{
+        "locate_filter":".blog-index a",
+        "target_attribute":"href"
+    },
+    "has_website_prefix":false
+}

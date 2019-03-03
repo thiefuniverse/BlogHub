@@ -1,5 +1,5 @@
 {
-    "root_url":"https://blog.csdn.net/mzpmzk",
+    "root_url":"https://blog.csdn.net/username",
     "css_selector":{
         "locate_filter":".article-list div",
         "ignore_filter": {
@@ -15,5 +15,5 @@
         },
         "next_css_selector":""
     },
-    "has_website_prefix":false
+    "has_website_prefix":true
 }

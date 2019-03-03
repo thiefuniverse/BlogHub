@@ -56,7 +56,9 @@ comment_issue() {
 
 # save history_links.json
 save_history() {
-    ga blog_json_config/history_links.json 
+    git config credential.helper "store --file=.git/credentials"
+    echo "https://${GITHUB_TOKEN}:@github.com" > .git/credentials
+    git add blog_json_config/history_links.json 
     git commit -m "travis ci automatically udpate history_links.json"
     git push origin master
 }

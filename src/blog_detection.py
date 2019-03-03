@@ -47,13 +47,10 @@ class BlogDetector:
             f.write(json.dumps(res, indent=4))
 
     def SaveNewLinks(self, new_links, new_links_file):
-        res = dict()
-        res["new_links"] = []
-        for link in new_links:
-            res["new_links"].append(link)
         # write file
         with open(new_links_file, "w", encoding='utf-8') as f:
-            f.write(json.dumps(res, indent=4))
+            for link in new_links:
+                f.write(link+"\n")
 
 if __name__ == "__main__":
     # todo 

@@ -46,9 +46,14 @@ class BlogDetector:
         with open(history_file, "w", encoding='utf-8') as f:
             f.write(json.dumps(res, indent=4))
 
-    def Notify(self, links):
-        "create issue and lock it in github issue."
-        pass
+    def SaveNewLinks(self, new_links, new_links_file):
+        res = dict()
+        res["new_links"] = []
+        for link in new_links:
+            res["new_links"].append(link)
+        # write file
+        with open(new_links_file, "w", encoding='utf-8') as f:
+            f.write(json.dumps(res, indent=4))
 
 if __name__ == "__main__":
     # todo 
@@ -60,4 +65,9 @@ if __name__ == "__main__":
     result_links, all_new_links = blogdetector.DetectBlog(sys.argv[1], sys.argv[2])
     blogdetector.SaveHistoryLinks(result_links, sys.argv[2])
     if all_new_links:
-        blogdetector.Notify(all_new_links)
+        blogdetector.SaveNewLinks(all_new_links, "new_links.json")
+    
+    d = ["a.html", "b.html"]
+    c = []
+    blogdetector.SaveNewLinks(d, "d.json")
+    blogdetector.SaveNewLinks(c, "c.json")

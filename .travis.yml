@@ -6,4 +6,4 @@ install:
 cache: pip
 script:
   # crawel and update history.txt
-  python src/main.py -b blog_json_config/flythief.example.json -s blog_json_config/history_links.json
+  ./run.sh

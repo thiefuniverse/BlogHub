@@ -14,13 +14,17 @@ class Crawler:
         s = session.get(url)
         # sleep 6 seconds ot wait other files rendered completely without js.
         # then render js script.
-        # todo: timeout 20s for waitting it's completely rendered. It's some of dirty.
-        s.html.render(sleep=2,wait=5, keep_page=False, timeout=30)
+        # todo: timeout 30s for waitting it's completely rendered. It's some of dirty.
+        print("before render")
+        s.html.render(sleep=2,wait=5,reload=False, keep_page=True, timeout=30)
+        print("after render")
+
         # session.close()
         return s.html.html
 
     def GetAllLinks(self, config):
         if config.root_url:
+            print("root url:", config.root_url)
             html = self.GetHtml(config.root_url)
         else:
             print("config.root_url is empty. whoopos error!")
@@ -79,7 +83,7 @@ class Crawler:
 if __name__ == "__main__":
     craw = Crawler()
     c = Config()
-    c.Load("blog_index_selector/csdn.def.json")
+    c.Load("blog_json_config/flythief.example.json")
 
     res = set()
     c.print()

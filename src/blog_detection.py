@@ -42,10 +42,10 @@ class BlogDetector:
         res["history_links"] = []
         for link in result_links:
             res["history_links"].append(link)
-        # sorted(res["history_links"])
+        sorted(res["history_links"])
         # write file
         with open(history_file, "w", encoding='utf-8') as f:
-            f.write(json.dumps(res, indent=4, sort_keys=False))
+            f.write(json.dumps(res, indent=4, sort_keys=True))
 
     def SaveNewLinks(self, new_links, new_links_file):
         # write file

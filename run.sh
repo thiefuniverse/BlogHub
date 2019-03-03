@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# you need modify this owner name to your name in github.
+owner_name=thiefuniverse
+
+# you should change this project_name if you change repo name after you forked BlogLinker
+project_name=BlogLinker
+
 # creator_name
 check_update() {
     # crawel blog and update history links file.
@@ -15,7 +21,7 @@ create_issue() {
     # create issue
     curl -H "Accept: application/json" \
     --header "Authorization: token $GITHUB_TOKEN" \
-    -H "Content-type: application/json" -X POST -d '{"title":"BlogLinker_generated", "body":"this issue is created by BlogLinker for blog subscribe."}' https://api.github.com/repos/thiefuniverse/BlogLinker/issues \
+    -H "Content-type: application/json" -X POST -d '{"title":"BlogLinker_generated", "body":"this issue is created by BlogLinker for blog subscribe."}' https://api.github.com/repos/$owner_name/$project_name/issues \
     > response.json
 
     echo "response: "
@@ -56,16 +62,19 @@ comment_issue() {
 
 # save history_links.json
 save_history() {
-    git config credential.helper "store --file=.git/credentials"
-    echo "https://${GITHUB_TOKEN}:@github.com" > .git/credentials
-    git add blog_json_config/history_links.json 
-    git commit -m "travis ci automatically udpate history_links.json"
-    if [ $? == 0 ]; then
-        git push origin master
-        exit 0
-    else
-        exit 1
+    if [ -f "new_links.txt" ]; then
+        git config credential.helper "store --file=.git/credentials"
+        echo "https://${GITHUB_TOKEN}:@github.com" > .git/credentials
+        git add blog_json_config/history_links.json 
+        git commit -m "travis ci automatically udpate history_links.json"
+        if [ $? == 0 ]; then
+            git push origin master
+            exit 0
+        else
+            exit 1
+        fi
     fi
+    exit 0
 }
 
 lock_issue() {
@@ -90,8 +99,8 @@ blog_linker_main() {
             check_update
         fi
     fi
-    clean_new_links
     save_history
+    clean_new_links
 }
 
 # main entrance

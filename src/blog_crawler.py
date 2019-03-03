@@ -14,7 +14,9 @@ class Crawler:
         s = session.get(url)
         # sleep 6 seconds ot wait other files rendered completely without js.
         # then render js script.
-        s.html.render(sleep=6,wait=5, keep_page=True)
+        # todo: timeout 20s for waitting it's completely rendered. It's some of dirty.
+        s.html.render(sleep=2,wait=5, keep_page=False, timeout=30)
+        # session.close()
         return s.html.html
 
     def GetAllLinks(self, config):

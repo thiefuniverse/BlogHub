@@ -4,6 +4,7 @@
 from blog_config import Config
 from blog_crawler import Crawler
 import sys, json
+from collections import OrderedDict
 
 class BlogDetector:
     def __init__(self):
@@ -27,14 +28,13 @@ class BlogDetector:
         history_links = set(history_links_json["history_links"])
         
         # get new blog links
+        if not self.config.has_website_prefix:
+            result_links = set(self.config.root_url+"/"+x for x in result_links)
         new_blog_links = set()
         for link in result_links:
             if link not in history_links:
                 new_blog_links.add(link)
 
-        if not self.config.has_website_prefix:
-            result_links = set(self.config.root_url+"/"+x for x in result_links)
-            new_blog_links = set(self.config.root_url+"/"+x for x in new_blog_links)
         return result_links, new_blog_links
 
     def SaveHistoryLinks(self, result_links, history_file):
@@ -42,9 +42,10 @@ class BlogDetector:
         res["history_links"] = []
         for link in result_links:
             res["history_links"].append(link)
+        # sorted(res["history_links"])
         # write file
         with open(history_file, "w", encoding='utf-8') as f:
-            f.write(json.dumps(res, indent=4))
+            f.write(json.dumps(res, indent=4, sort_keys=False))
 
     def SaveNewLinks(self, new_links, new_links_file):
         # write file

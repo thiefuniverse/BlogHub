@@ -14,4 +14,4 @@ before_script:
   - git config --global user.email "thiefuniverses@gmail.com"
   - git config --global user.name "travis of flythief"
 after_script:
-  - ./run.sh push
+  - travis retry ./run.sh push

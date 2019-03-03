@@ -60,7 +60,11 @@ save_history() {
     echo "https://${GITHUB_TOKEN}:@github.com" > .git/credentials
     git add blog_json_config/history_links.json 
     git commit -m "travis ci automatically udpate history_links.json"
-    git push origin master
+    if [ $? == 0 ]; then
+        git push origin master
+        exit 0
+    else
+        exit 1
 }
 
 lock_issue() {

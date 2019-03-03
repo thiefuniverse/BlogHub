@@ -1,4 +1,5 @@
-#!/bin/python3
+#!usr/bin/env python3
+# encoding: utf-8
 
 from blog_config import Config
 # extract links like jQuery
@@ -11,19 +12,19 @@ class Crawler:
         "get html by requests-html which can render js."
         session=HTMLSession()
         s = session.get(url)
-        # sleep 3 seconds ot wait other files rendered completely without js.
+        # sleep 6 seconds ot wait other files rendered completely without js.
         # then render js script.
         s.html.render(sleep=6,wait=5, keep_page=True)
         return s.html.html
 
-    def GetAllLinks(self, config, results):
+    def GetAllLinks(self, config):
         if config.root_url:
             html = self.GetHtml(config.root_url)
         else:
             print("config.root_url is empty. whoopos error!")
             return
-        # print(html)
-        # html = open("c2.html", "r").read()
+        # test function
+        # html = open("test_json_selector.html", "r").read()
         results = self.RecursionCssSelector(config.css_selector, config.next_css_selector, html)
         return results
 
@@ -80,5 +81,5 @@ if __name__ == "__main__":
 
     res = set()
     c.print()
-    res = set(craw.GetAllLinks(c, res))
+    res = set(craw.GetAllLinks(c))
     print(len(res))

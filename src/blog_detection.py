@@ -1,4 +1,5 @@
-#!/bin/python3
+#!usr/bin/env python3
+# encoding: utf-8
 
 from blog_config import Config
 from blog_crawler import Crawler
@@ -18,7 +19,7 @@ class BlogDetector:
             return
         result_links = set()
         # we need catch exception
-        self.crawler.GetAllLinks(self.config, result_links)
+        result_links = set(self.crawler.GetAllLinks(self.config))
 
         # read history links
         with open(history_links_file, "r", encoding='utf-8') as f:
@@ -33,13 +34,13 @@ class BlogDetector:
 
         return result_links, new_blog_links
 
-    def SaveHistoryLinks(self, result_links):
+    def SaveHistoryLinks(self, result_links, history_file):
         res = dict()
         res["history_links"] = []
         for link in result_links:
             res["history_links"].append(link)
         # write file
-        with open("history_links.json", "w", encoding='utf-8') as f:
+        with open(history_file, "w", encoding='utf-8') as f:
             f.write(json.dumps(res, indent=4))
 
     def Notify(self, links):
@@ -54,6 +55,6 @@ if __name__ == "__main__":
         exit
     blogdetector = BlogDetector()
     result_links, all_new_links = blogdetector.DetectBlog(sys.argv[1], sys.argv[2])
-    blogdetector.SaveHistoryLinks(result_links)
+    blogdetector.SaveHistoryLinks(result_links, sys.argv[2])
     if all_new_links:
         blogdetector.Notify(all_new_links)

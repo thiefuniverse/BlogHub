@@ -24,4 +24,4 @@ if __name__ == "__main__":
     
     # if any new, notify someone.
     if all_new_links:
-        blog_detector.SaveNewLinks(all_new_links, "new_links.json")
+        blog_detector.SaveNewLinks(all_new_links, "new_links.txt")

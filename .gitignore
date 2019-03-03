@@ -1,4 +1,6 @@
 *deprecated
 bin
 *__pycache__
-*new_links.json
+*new_links.txt
+*response.json
+*post.json

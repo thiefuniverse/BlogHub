@@ -7,3 +7,6 @@ cache: pip
 script:
   # crawel and update history.txt
   ./run.sh
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install jq

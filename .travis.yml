@@ -10,3 +10,10 @@ script:
 before_install:
   - sudo apt-get update
   - sudo apt-get install jq
+before_script:
+  - git config --global user.email "thiefuniverses@gmail.com"
+  - git config --global user.name "travis of flythief"
+after_script:
+  - git config credential.helper "store --file=.git/credentials"
+  - echo "https://${GITHUB_TOKEN}:@github.com" > .git/credentials
+  - ./run.sh push

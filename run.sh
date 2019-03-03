@@ -54,8 +54,11 @@ comment_issue() {
     rm $post_json_data
 }
 
+# save history_links.json
 save_history() {
-    
+    ga blog_json_config/history_links.json 
+    git commit -m "travis ci automatically udpate history_links.json"
+    git push origin master
 }
 
 lock_issue() {
@@ -85,4 +88,8 @@ blog_linker_main() {
 }
 
 # main entrance
-blog_linker_main
+if [ "$1" == "push" ]; then
+    save_history
+else
+    blog_linker_main
+fi

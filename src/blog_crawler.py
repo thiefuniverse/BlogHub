@@ -18,20 +18,59 @@ class Crawler:
 
     def GetAllLinks(self, config, results):
         if config.root_url:
-
             html = self.GetHtml(config.root_url)
         else:
             print("config.root_url is empty. whoopos error!")
             return
         # print(html)
-        index_html = PQ(html)
-        a_html = index_html(config.css_selector)
-        # print(index_html)
-        for x in a_html.items():
-            href = x.attr('href')
-            print("link:", href)
-            if href:
-                results.add(href)
+        # html = open("c2.html", "r").read()
+        results = self.RecursionCssSelector(config.css_selector, config.next_css_selector, html)
+        return results
+
+    def RecursionCssSelector(self, css_select, next_css_select, current_html):
+        if not css_select:
+            return []
+        cur_css_html = PQ(current_html)
+        css_htmls = cur_css_html(css_select.locate_filter)
+        res = []
+
+        # ignore some htmls by ignore_filter
+        ignore_attr_dict = css_select.ignore_filter
+        target_attr = css_select.target_attribute
+
+        # get sub html elements
+        if ignore_attr_dict:
+            for one_html in css_htmls.items():
+                for k in ignore_attr_dict:
+                    if not one_html.attr(k) == ignore_attr_dict[k]:
+                        res.append(one_html.html())
+        else:
+            for one_html in css_htmls.items():
+                res.append(one_html.html())      
+
+        # if current css selector has target attribute, then we extract target link directly.
+        res_real = []
+        if target_attr:
+            for one_html in css_htmls.items():
+                ta = one_html.attr(target_attr)
+                if ta:
+                    print("get one a:", ta)
+                    res_real.append(ta)
+            
+        # handle next css selector
+        result = []
+        if next_css_select:
+            for res_html in res:
+                recursion_res = []
+                if res_html and next_css_select.CssSelector:
+                    recursion_res = self.RecursionCssSelector(next_css_select.CssSelector, next_css_select.next_css_selector, res_html)
+                if recursion_res:
+                    result += recursion_res
+        result += res_real
+        # print("current result done:", result)
+        return result
+
+
 
 # test 
 if __name__ == "__main__":
@@ -40,5 +79,6 @@ if __name__ == "__main__":
     c.Load("blog_index_selector/csdn.def.json")
 
     res = set()
-    craw.GetAllLinks(c, res)
+    c.print()
+    res = set(craw.GetAllLinks(c, res))
     print(len(res))

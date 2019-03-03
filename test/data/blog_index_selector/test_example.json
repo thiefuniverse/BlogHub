@@ -1,0 +1,32 @@
+{
+    "root_url":"https://blog.csdn.net/mzpmzk",
+    "css_selector":{
+        "locate_filter":"div1",
+        "ignore_filter": {
+            "style":"display: none;"
+        },
+        "target_attribute":""
+    },
+    "next_css_selector":{
+        "css_selector":{
+            "locate_filter":"div2",
+            "ignore_filter":"",
+            "target_attribute":"href"
+        },
+        "next_css_selector":{
+            "css_selector":{
+                "locate_filter":"div3",
+                "ignore_filter":"",
+                "target_attribute":"href"
+            },
+            "next_css_selector":{
+                "css_selector":{
+                    "locate_filter":"b",
+                    "ignore_filter":"",
+                    "target_attribute":"href"
+                }
+            }
+        }
+    },
+    "has_website_prefix":false
+}

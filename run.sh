@@ -65,6 +65,7 @@ save_history() {
         exit 0
     else
         exit 1
+    fi
 }
 
 lock_issue() {

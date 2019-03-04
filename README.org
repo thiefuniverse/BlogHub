@@ -26,7 +26,7 @@ You can run it in your own server(You should run *pip install -r requirements.tx
 You can refer the *issue_track.html* in repo when you have create your *issue*. Add pieces in issue_track.html to your blog html, you will get one subscribe button like Issue at [[https://buttons.github.io/][here]]. 
 
 
-*** done! Just    
+*** done! Just   Enjoy it! : )
 * Blog Links Resolution Rule
 ** Basic config
 We construct one standard rule to extract links in one html file. Its structure is like this.

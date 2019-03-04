@@ -1,2 +1,127 @@
 * BlogLinker  [[https://travis-ci.com/thiefuniverse/BlogLinker.svg?branch=master]]
 A service for pushing your blog update by github issue subscribe.
+
+* Introduction
+Blog Linker is a blog subscriber which uses github issue subscribe merchanism. You can config it as your blog publisher for other github users very easily.
+
+* Explanation
+ At first, *Blog Linker* will exist as a github repo even you run it in your server. you should set one blog link for it and then run it. it will *create one github issue* in repo(we call it *origin issue*. Then it will crawl blog's update article by a web crawler. If it gets one new blog, it will send one comment to previous issue. Now if someone who are github user subscribed this issue, he will get one notification in email.
+ 
+* Usage
+** get this repo. 
+You can clone this repo's code and run it in your server. Also you can just fork this repo, and then register [[https://travis-ci.com/][travis-ci]],and run it in travis server daily.
+
+** settings for yourself.
+*** get one github personal access token
+Blog Linker will create and lock issue in your github repo and post one comment in this issue, this requires you *generate one github personal access token* for it. You can generate it at [[https://github.com/settings/tokens][here]]. And then set *GITHUB_TOKEN* environment variable in your server or in your travis-ci setting. (You can find that Blog Linker will need you to set GITHUB_TOKEN variable in *run.sh*)
+*** Fit your blog article links resolution rule.
+Blog Linker's web crawler will crawl blog index link, save current all articles links as history links. And next time it will crawl again and compare links with history links. If some links are newer, they will be posted to *origin issue* as one comment. For this, you should define your blog articles links rule for Blog Linker to crawl them and resolve them. Specific resolution rule shows as below. You should create your own config.json file and commit to your repo. And modfiy check_update function in run.sh (change json file name to yours).
+*** modify owner_name in run.sh
+You should modify owner_name in run.sh (in the first few lines). It will be used to construct your repo url for creating one issue.
+
+** deploy your Blog Linker
+*** In which server?
+You can run it in your own server(You should run *pip install -r requirements.txt* for your python dependencies), and create some cron jobs for crawling your blog regularly. Also you just make it run daily in travis-ci. .travis.yml in this repo has been working for me.
+*** You need one subscribe link for other user to click.
+You can refer the *issue_track.html* in repo when you have create your *issue*. Add pieces in issue_track.html to your blog html, you will get one subscribe button like Issue at [[https://buttons.github.io/][here]]. 
+
+
+*** done! Just    
+* Blog Links Resolution Rule
+** Basic config
+We construct one standard rule to extract links in one html file. Its structure is like this.
+
+#+BEGIN_SRC json
+  {
+      "root_url":"https://thiefuniverse.github.io/",
+      "css_selector":{
+	  "locate_filter":".blog-index a",
+	  "target_attribute":"href"
+      },
+      "has_website_prefix":false
+  }
+#+END_SRC
+
+You should set your blog link in *root_url*. *css_selector* is a very important variable for you to locate the position of your article link. It contains three variables: *locate_filter*, *ignore_filter*, *target_attribute*. *locate_filter* is a css selector for your to locate to some pieces of html elements (for example above, we will get all "a" elements which belong class "blog-index" label in your html file.) Then we will get "a" elements' attribute "href" as our articles links. (usually we know that links in html will be showed as "href"). *has_website_prefix* is a declare for whether your "href" contains your website prefix or not. For example, if your "href" is "one_article.html", you should set this variable as false and then *Blog Linker* will add prefix "root_url" for you. (Then complete link "https://thiefuniverse.github.io/one_article.html" will be real links.)
+
+** Custom config
+Except simple rule above, *Blog Linker* also support some more complicated rule. For example, its structure can be this.
+
+#+BEGIN_SRC json
+  {
+      "root_url":"http://127.0.0.1:8000/test_json_selector.html",
+      "css_selector":{
+	  "locate_filter":"div1",
+	  "ignore_filter": {
+	      "type":"ignore"
+	  },
+	  "target_attribute":""
+      },
+      "next_css_selector":{
+	  "css_selector":{
+	      "locate_filter":"div2",
+	      "ignore_filter":"",
+	      "target_attribute":"href"
+	  },
+	  "next_css_selector":{
+	      "css_selector":{
+	      "locate_filter":"div3",
+	      "ignore_filter":"",
+	      "target_attribute":"href"
+	      }
+      }
+  },
+      "has_website_prefix":false
+  }
+#+END_SRC
+
+*ignore_filter* will define some attributes for some html elements which belong *locate_filter* and will be ignored. By *css_selector* , we get some "div1" html elements. Then we use *next_css_selector* to extract our links further from html elements filtered from first *css_selector*. Within *next_css_selector* , we see another *css_selector* will extract "div2" elements and try to get "href" in this level. Then we extract "div3" elements and get "href", and so on. This is a example below, you can try to test it in test directory(just run *run_test_.sh*).
+
+#+BEGIN_SRC html
+  <div1 type="test">
+      <div2 href="fly1.html">  <!-- this href "fly1.html" will be extracted.  it's target_attribute in second level css_selector -->
+	  <div3 href="div3.html">   <!-- this href "div3.html" will be extracted.  it's target_attribute in third level css_selector -->
+	      <a href="thief31.html"></a>
+	      <a href="thief32.html"></a>
+	  </div3>
+      </div2>
+      <div2>
+	  <div3 href="div4.html"> <!-- this href "div4.html" will be extracted.  it's target_attribute in third level css_selector -->
+	      <a href="thief43.html"></a>
+	      <b href="thief44.html"></b>
+	  </div3>
+      </div2>
+  </div1>
+
+  <div1 type="ignore">   <!-- type: ignore   ignore filter in div1. so this div1 will be ignored -->
+	  <div2 href="fly2.html">
+	      <div3 href="div4.html">
+		  <a href="thief41.html"></a>
+		  <a href="thief42.html"></a>
+	      </div3>
+	  </div2>
+	  <div2>
+	      <div3>
+		  <a href="thief51.html"></a>
+		  <b href="thief52.html"></b>
+	      </div3>
+	  </div2>
+      </div1>
+#+END_SRC
+
+
+** cheatsheet for resolution rule
+| root_url           | your blog link                                                              |
+| css_selector       | contain 3 feature to locate and filter html elements                        |
+| locate_filter      | locate to some small html elements                                          |
+| ignore_filter      | define some k-v attributes for ignoring these html elements                 |
+| target_attribute   | define attribute what you want to extract (links for us) from html files    |
+| next_css_selector  | contain css_selector and next_css_selector, for locate elements recursively |
+| has_website_prefix | If it's false, add current root_url as prefix for current links.            |
+
+* Issues
+If you have some questions or suggestions, welcome to open one issue! :) 
+
+* Thanks
+Thanks for all people who love me. Thanks for contributors of requests-html, pyquery.
+

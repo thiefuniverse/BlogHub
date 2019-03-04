@@ -9,6 +9,7 @@ project_name=BlogLinker
 # creator_name
 check_update() {
     # crawel blog and update history links file.
+    # !!! blog_json_config/flythief.example.json will be modified by user
     python3 src/main.py -b blog_json_config/flythief.example.json -s blog_json_config/history_links.json
 }
 clean_new_links() {

@@ -1,14 +1,34 @@
-<div1 class="test" data-articleid="80824839">
-        <div2 href = "fly1.html">
-            <div3 href = "div3.html">
-                <a href="thief1.html"></a>
-                <a href="thief2.html"></a>
-            </div3>
-        </div2>
-        <div2>
-              <div3>
-                  <a href="thief3.html"></a>
-                  <b href="thief4.html"></b>
-              </div3>
-          </div2>   
-    </div1>
+<div1 type="test">
+    <div2 href="fly1.html">
+        <!-- this href "fly1.html" will be extracted.  it's target_attribute in second level css_selector -->
+        <div3 href="div3.html">
+            <!-- this href "div3.html" will be extracted.  it's target_attribute in third level css_selector -->
+            <a href="thief31.html"></a>
+            <a href="thief32.html"></a>
+        </div3>
+    </div2>
+    
+    <div2>
+        <div3 href="div4.html">
+            <!-- this href "div4.html" will be extracted.  it's target_attribute in third level css_selector -->
+            <a href="thief43.html"></a>
+            <b href="thief44.html"></b>
+        </div3>
+    </div2>
+</div1>
+
+<div1 type="ignore">
+    <!-- type: ignore   ignore filter in div1. so this div1 will be ignored -->
+    <div2 href="fly2.html">
+        <div3 href="div4.html">
+            <a href="thief41.html"></a>
+            <a href="thief42.html"></a>
+        </div3>
+    </div2>
+    <div2>
+        <div3>
+            <a href="thief51.html"></a>
+            <b href="thief52.html"></b>
+        </div3>
+    </div2>
+</div1>

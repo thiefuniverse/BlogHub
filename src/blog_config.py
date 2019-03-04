@@ -67,7 +67,7 @@ class Config:
                 self.css_selector.ignore_filter = css_selector_config["ignore_filter"]
 
             if "next_css_selector" in json_config:
-                print("json tt:",json_config["next_css_selector"])
+                # print("json config:",json_config["next_css_selector"])
                 self.next_css_selector =self.ReadNextCssSelector(self.next_css_selector, json_config["next_css_selector"])
         return 
    

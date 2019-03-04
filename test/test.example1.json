@@ -1,0 +1,25 @@
+{
+    "root_url":"http://127.0.0.1:8000/test_json_selector.html",
+    "css_selector":{
+        "locate_filter":"div1",
+        "ignore_filter": {
+            "type":"ignore"
+        },
+        "target_attribute":""
+    },
+    "next_css_selector":{
+        "css_selector":{
+            "locate_filter":"div2",
+            "ignore_filter":"",
+            "target_attribute":"href"
+        },
+        "next_css_selector":{
+            "css_selector":{
+            "locate_filter":"div3",
+            "ignore_filter":"",
+            "target_attribute":"href"
+            }
+    }
+},
+    "has_website_prefix":false
+}

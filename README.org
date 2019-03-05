@@ -2,6 +2,8 @@
 * BlogLinker  [[https://travis-ci.com/thiefuniverse/BlogLinker.svg?branch=master]]
 A service for pushing your blog update by github issue subscribe.
 
+[[https://github.com/thiefuniverse/BlogLinker/tree/master/doc/img/blog_linker_demo.gif]]
+
 * Introduction
 Blog Linker is a blog subscriber which uses github issue subscribe merchanism. You can config it as your blog publisher for other github users very easily.
 

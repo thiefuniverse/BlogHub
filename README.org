@@ -1,34 +1,34 @@
 * BlogLinker  [[https://travis-ci.com/thiefuniverse/BlogLinker.svg?branch=master]]
 A service for pushing your blog update by github issue subscribe.
 
-* Introduction
+* 1. Introduction
 Blog Linker is a blog subscriber which uses github issue subscribe merchanism. You can config it as your blog publisher for other github users very easily.
 
-* Explanation
+* 2. Explanation
  At first, *Blog Linker* will exist as a github repo even you run it in your server. you should set one blog link for it and then run it. it will *create one github issue* in repo(we call it *origin issue*. Then it will crawl blog's update article by a web crawler. If it gets one new blog, it will send one comment to previous issue. Now if someone who are github user subscribed this issue, he will get one notification in email.
  
-* Usage
-** get this repo. 
+* 3. Usage
+** 3.1 get this repo. 
 You can clone this repo's code and run it in your server. Also you can just fork this repo, and then register [[https://travis-ci.com/][travis-ci]],and run it in travis server daily.
 
-** settings for yourself.
-*** get one github personal access token
+** 3.2 settings for yourself.
+*** 3.2.1 get one github personal access token
 Blog Linker will create and lock issue in your github repo and post one comment in this issue, this requires you *generate one github personal access token* for it. You can generate it at [[https://github.com/settings/tokens][here]]. And then set *GITHUB_TOKEN* environment variable in your server or in your travis-ci setting. (You can find that Blog Linker will need you to set GITHUB_TOKEN variable in *run.sh*)
-*** Fit your blog article links resolution rule.
+*** 3.2.2 Fit your blog article links resolution rule.
 Blog Linker's web crawler will crawl blog index link, save current all articles links as history links. And next time it will crawl again and compare links with history links. If some links are newer, they will be posted to *origin issue* as one comment. For this, you should define your blog articles links rule for Blog Linker to crawl them and resolve them. Specific resolution rule shows as below. You should create your own config.json file and commit to your repo. And modfiy check_update function in run.sh (change json file name to yours).
-*** modify owner_name in run.sh
+*** 3.2.3 modify owner_name in run.sh
 You should modify owner_name in run.sh (in the first few lines). It will be used to construct your repo url for creating one issue.
 
-** deploy your Blog Linker
-*** In which server?
+** 3.3 deploy your Blog Linker
+*** 3.3.1 In which server?
 You can run it in your own server(You should run *pip install -r requirements.txt* for your python dependencies), and create some cron jobs for crawling your blog regularly. Also you just make it run daily in travis-ci. .travis.yml in this repo has been working for me.
-*** You need one subscribe link for other user to click.
+*** 3.3.2 You need one subscribe link for other user to click.
 You can refer the *issue_track.html* in repo when you have create your *issue*. Add pieces in issue_track.html to your blog html, you will get one subscribe button like Issue at [[https://buttons.github.io/][here]]. 
 
 
-*** done! Just   Enjoy it! : )
-* Blog Links Resolution Rule
-** Basic config
+*** 3.3.3 done! Just   Enjoy it! : )
+* 4. Blog Links Resolution Rule
+** 4.1 Basic config
 We construct one standard rule to extract links in one html file. Its structure is like this.
 
 #+BEGIN_SRC json
@@ -44,7 +44,7 @@ We construct one standard rule to extract links in one html file. Its structure 
 
 You should set your blog link in *root_url*. *css_selector* is a very important variable for you to locate the position of your article link. It contains three variables: *locate_filter*, *ignore_filter*, *target_attribute*. *locate_filter* is a css selector for your to locate to some pieces of html elements (for example above, we will get all "a" elements which belong class "blog-index" label in your html file.) Then we will get "a" elements' attribute "href" as our articles links. (usually we know that links in html will be showed as "href"). *has_website_prefix* is a declare for whether your "href" contains your website prefix or not. For example, if your "href" is "one_article.html", you should set this variable as false and then *Blog Linker* will add prefix "root_url" for you. (Then complete link "https://thiefuniverse.github.io/one_article.html" will be real links.)
 
-** Custom config
+** 4.2 Custom config
 Except simple rule above, *Blog Linker* also support some more complicated rule. For example, its structure can be this.
 
 #+BEGIN_SRC json
@@ -110,7 +110,7 @@ Except simple rule above, *Blog Linker* also support some more complicated rule.
 #+END_SRC
 
 
-** cheatsheet for resolution rule
+** 4.3 cheatsheet for resolution rule
 | root_url           | your blog link                                                              |
 | css_selector       | contain 3 feature to locate and filter html elements                        |
 | locate_filter      | locate to some small html elements                                          |
@@ -119,9 +119,9 @@ Except simple rule above, *Blog Linker* also support some more complicated rule.
 | next_css_selector  | contain css_selector and next_css_selector, for locate elements recursively |
 | has_website_prefix | If it's false, add current root_url as prefix for current links.            |
 
-* Issues
+* 5. Issues
 If you have some questions or suggestions, welcome to open one issue! :) 
 
-* Thanks
+* 6. Thanks
 Thanks for all people who love me. Thanks for contributors of requests-html, pyquery.
 

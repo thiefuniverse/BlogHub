@@ -1,3 +1,4 @@
+#+OPTIONS: num:t
 * BlogLinker  [[https://travis-ci.com/thiefuniverse/BlogLinker.svg?branch=master]]
 A service for pushing your blog update by github issue subscribe.
 

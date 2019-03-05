@@ -43,7 +43,7 @@ We construct one standard rule to extract links in one html file. Its structure 
   }
 #+END_SRC
 
-You should set your blog link in *root_url*. *css_selector* is a very important variable for you to locate the position of your article link. It contains three variables: *locate_filter*, *ignore_filter*, *target_attribute*. *locate_filter* is a css selector for your to locate to some pieces of html elements (for example above, we will get all "a" elements which belong class "blog-index" label in your html file.) Then we will get "a" elements' attribute "href" as our articles links. (usually we know that links in html will be showed as "href"). *has_website_prefix* is a declare for whether your "href" contains your website prefix or not. For example, if your "href" is "one_article.html", you should set this variable as false and then *Blog Linker* will add prefix "root_url" for you. (Then complete link "https://thiefuniverse.github.io/one_article.html" will be real links.)
+You should set your blog link in *root_url*. *css_selector* is a very important variable for you to locate the position of your article link. It contains three variables: *locate_filter*, *ignore_filter*, *target_attribute*. *locate_filter* is a css selector for your to locate to some pieces of html elements (for example above, we will get all "a" elements which belong class "blog-index" label in your html file.) Then we will get "a" elements' attribute "href" as our articles links. (usually we know that links in html will be showed as "href"). *has_website_prefix* is a declare for whether your "href" contains your website prefix or not. For example, if your "href" is "one_article.html", you should set this variable as false and then *Blog Linker* will add prefix "root_url" for you. (Then complete link "https://thiefuniverse.github.io/one_article.html" will be real link for publishing.)
 
 ** Custom config
 Except simple rule above, *Blog Linker* also support some more complicated rule. For example, its structure can be this.
@@ -112,17 +112,20 @@ Except simple rule above, *Blog Linker* also support some more complicated rule.
 
 
 ** cheatsheet for resolution rule
-| root_url           | your blog link                                                              |
-| css_selector       | contain 3 feature to locate and filter html elements                        |
-| locate_filter      | locate to some small html elements                                          |
-| ignore_filter      | define some k-v attributes for ignoring these html elements                 |
-| target_attribute   | define attribute what you want to extract (links for us) from html files    |
-| next_css_selector  | contain css_selector and next_css_selector, for locate elements recursively |
-| has_website_prefix | If it's false, add current root_url as prefix for current links.            |
+| root_url           | your blog link                                                                |
+| css_selector       | contain 3 feature to locate and filter html elements                          |
+| locate_filter      | locate to some small html elements                                            |
+| ignore_filter      | define some k-v attributes for ignoring these html elements                   |
+| target_attribute   | define attribute what you want to extract (links for us) from html files      |
+| next_css_selector  | contain css_selector and next_css_selector, for locating elements recursively |
+| has_website_prefix | If it's false, add current root_url as prefix for current links.              |
+
+* DrawBacks
+Now we only can open issue link and click subscribe button in github website. It's dirty, but now we don't have some good choices. :(
+
 
 * Issues
 If you have some questions or suggestions, welcome to open one issue! :) 
 
 * Thanks
 Thanks for all people who love me. Thanks for contributors of requests-html, pyquery.
-

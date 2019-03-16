@@ -1,0 +1,7 @@
+{
+    "css_selector":{
+        "locate_filter":"head title",
+        "locate_content":true
+    },
+    "has_website_prefix":false
+}

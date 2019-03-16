@@ -121,6 +121,8 @@ blog_linker_main() {
 # main entrance
 if [ "$1" == "push" ]; then
     save_history
+elif [ "$1" == "comment" ]; then
+    comment_issue
 else
     blog_linker_main
 fi

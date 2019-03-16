@@ -12,7 +12,7 @@ class Crawler:
         "get html by requests-html which can render js."
         session=HTMLSession()
         s = session.get(url)
-        # sleep 6 seconds ot wait other files rendered completely without js.
+        # sleep 2 seconds ot wait other files rendered completely without js.
         # then render js script.
         # todo: timeout 30s for waitting it's completely rendered. It's some of dirty.
         print("before render")
@@ -20,19 +20,20 @@ class Crawler:
         print("after render")
 
         # session.close()
-        return s.html.html
+        return s.html
 
-    def GetAllLinks(self, config):
+    def GetAllTargets(self, config):
         if config.root_url:
             print("root url:", config.root_url)
-            html = self.GetHtml(config.root_url)
+            h = self.GetHtml(config.root_url)
         else:
             print("config.root_url is empty. whoopos error!")
             return
         # test function
         # html = open("test_json_selector.html", "r").read()
-        results = self.RecursionCssSelector(config.css_selector, config.next_css_selector, html)
-        return results
+        results = self.RecursionCssSelector(config.css_selector, config.next_css_selector, h.html)
+        # return targets and current html text
+        return results, h.text
 
     def RecursionCssSelector(self, css_select, next_css_select, current_html):
         if not css_select:
@@ -57,12 +58,17 @@ class Crawler:
 
         # if current css selector has target attribute, then we extract target link directly.
         res_real = []
-        if target_attr:
+        if target_attr or css_select.locate_content:
             for one_html in css_htmls.items():
-                ta = one_html.attr(target_attr)
-                if ta:
-                    print("get one a:", ta)
-                    res_real.append(ta)
+                print("oh:", one_html)
+                print("oh content:", one_html.text())
+                if css_select.locate_content:
+                    res_real.append(one_html.text())
+                else:
+                    ta = one_html.attr(target_attr)
+                    if ta:
+                        print("get one a:", ta)
+                        res_real.append(ta)
             
         # handle next css selector
         result = []
@@ -77,15 +83,16 @@ class Crawler:
         # print("current result done:", result)
         return result
 
-
+    # def 
 
 # test 
 if __name__ == "__main__":
     craw = Crawler()
     c = Config()
-    c.Load("blog_json_config/flythief.example.json")
+    c.Load("../blog_json_config/flythief.title.json")
 
     res = set()
-    c.print()
-    res = set(craw.GetAllLinks(c))
-    print(len(res))
+    if c.loadSuccess:
+        c.print()
+        res = set(craw.GetAllTargets(c))
+        print(len(res))

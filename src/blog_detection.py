@@ -1,6 +1,8 @@
 #!usr/bin/env python3
 # encoding: utf-8
 
+# use crawler to crawl new blog links
+
 from blog_config import Config
 from blog_crawler import Crawler
 import sys, json
@@ -20,7 +22,7 @@ class BlogDetector:
             return
         result_links = set()
         # we need catch exception
-        result_links = set(self.crawler.GetAllLinks(self.config))
+        result_links = set(self.crawler.GetAllTargets(self.config))
 
         # read history links
         with open(history_links_file, "r", encoding='utf-8') as f:
